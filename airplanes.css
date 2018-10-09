@@ -1,0 +1,57 @@
+html {
+    background-color: rgba(96, 139, 168, .1);
+}
+
+body {
+    width: 800px;
+    margin: auto;
+}
+
+body > p {
+    font-family: Calibri, sans-serif;
+    color: rgb(114, 114, 114);
+    margin-left: 160px;
+    margin-bottom: -35px;
+}
+
+body h1 {
+    font-family: cursive;
+    color: rgba(59, 84, 100, .9);
+    font-size: 400%;
+    margin-top: 0;
+    border: 4px solid rgb(96, 139, 168);
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+body div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 6fr;
+}
+
+body div p {
+    font-family: Calibri, sans-serif;
+    color: rgb(114, 114, 114);
+    border: 1px solid rgb(114, 114, 114);
+    border-radius: 10px;
+    padding: 5px;
+    justify-self: center;
+}
+
+.sky {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr); 
+    justify-self: center;
+    border-radius: 10px;
+    border: 4px solid black;
+    height: 250px;
+    width: 250px;
+}
+
+.skysquare {
+    background-color: rgba(96, 139, 168, .1);
+    border: 1px solid rgb(78, 111, 133);
+}
