@@ -5,39 +5,74 @@ html {
 body {
     width: 800px;
     margin: auto;
+    font-family: Calibri, sans-serif;
+    color: rgb(114, 114, 114);
 }
 
 body > p {
-    font-family: Calibri, sans-serif;
-    color: rgb(114, 114, 114);
-    margin-left: 160px;
-    margin-bottom: -35px;
+    margin-left: 260px;
+    margin-bottom: -55px;
+    margin-top: 35px;
 }
 
-body h1 {
-    font-family: cursive;
-    color: rgba(59, 84, 100, .9);
-    font-size: 400%;
+h1 {
+    margin-bottom: 0;
     margin-top: 0;
+}
+
+#title {
+    display: flex;
+    font-family: 'Mali', cursive;
+    color: rgba(59, 84, 100, .9);
+    font-size: 300%;
     border: 4px solid rgb(96, 139, 168);
     border-radius: 20px;
     padding-left: 10px;
     padding-bottom: 10px;
+    margin-top: 5px;
+}
+
+h1::first-letter {
+    color: skyblue;
 }
 
 body div {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 6fr;
+    grid-template-columns: 4fr 1fr 4fr;
+    grid-template-rows: 1fr 5fr;
+    grid-template-areas:
+                        "a b c"
+                        "d e f";
 }
 
 body div p {
-    font-family: Calibri, sans-serif;
-    color: rgb(114, 114, 114);
     border: 1px solid rgb(114, 114, 114);
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 5px;
     justify-self: center;
+}
+
+#mp {
+    grid-area: a;
+}
+
+#select {
+    grid-area: e;
+    height: 250px;
+    margin-top: 0;
+    text-align: center;
+}
+
+#cp {
+    grid-area: c;
+}
+
+#my {
+    grid-area: d;
+}
+
+#computer {
+    grid-area: f;
 }
 
 .sky {
@@ -51,7 +86,8 @@ body div p {
     width: 250px;
 }
 
-.skysquare {
+.skysquare1, .skysquare2, .skysquare3 {
     background-color: rgba(96, 139, 168, .1);
     border: 1px solid rgb(78, 111, 133);
+    
 }
