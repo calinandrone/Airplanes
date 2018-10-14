@@ -45,7 +45,7 @@ body div {
                         "d e f";
 }
 
-body div p {
+body > div > p, #select {
     border: 1px solid rgb(114, 114, 114);
     border-radius: 20px;
     padding: 5px;
@@ -57,9 +57,16 @@ body div p {
 }
 
 #select {
+    display: block;
     grid-area: e;
     height: 250px;
+    width: 90px;
     margin-top: 0;
+    text-align: center;
+}
+
+#cp, #mp {
+    width: 240px;
     text-align: center;
 }
 
@@ -89,4 +96,8 @@ body div p {
 .skysquare1, .skysquare2, .skysquare3 {
     background-color: rgba(96, 139, 168, .1);
     border: 1px solid rgb(78, 111, 133);
+}
+
+.remove2 {
+    display: none;
 }

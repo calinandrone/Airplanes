@@ -4,15 +4,16 @@ for (let i = 0; i < 100; i++) {
     sky[0].appendChild(createSkySquare(i, 1));
     sky[1].appendChild(createSkySquare(i, 3));
 }
+let colorEmpty = 'rgba(60, 127, 168, 1)', colorBody = 'rgba(96, 59, 59, 1)', colorHead = 'rgba(157, 12, 12, 1)';
 
-//player planes variables:
+//the player mighty planes mighty variables:
 let myPlanes = [], planeSquares = [], range, x , y, sid, doc,
-skySquares = Array.from(document.getElementsByClassName("skysquare1")),
-button = document.querySelector("button"), select = document.querySelector("select");
+playerSkySquares = Array.from(document.getElementsByClassName("skysquare1")),
+button = document.getElementById("pp"), select = document.querySelector("select");
 
 //computer planes variables:
-let computerSky = Array.from(document.getElementsByClassName("skysquare2")),
-computerPlanes = [];
+let computerSkySquares = Array.from(document.getElementsByClassName("skysquare3")),
+computerPlanes = [], csid, target, element;
 
 
 // functions:
@@ -62,8 +63,11 @@ function setBgGray() {
     for (let ps of planeSquares) {
         if (overlapCheck("player", ps)) for (let ps of planeSquares)
                 ps.removeEventListener("click", setPlane);
-        if (!overlapCheck("player", ps)) 
-                ps.style = 'background-color: #aaa';
+        if (!overlapCheck("player", ps)) {
+            //ps.style = 'cursor: none';
+            ps.style = 'background-color: #aaa';
+        }
+                
     }
            
 } 
@@ -87,7 +91,7 @@ function setPlane() {
             }
         }
 
-        for (let square of skySquares) {
+        for (let square of playerSkySquares) {
             square.removeEventListener("mouseenter", setBgGray);
             square.removeEventListener("mouseleave", setBgEmpty);
             square.removeEventListener("mouseenter", planePreview);
@@ -95,7 +99,7 @@ function setPlane() {
         }
         
         for (let ps of planeSquares) 
-                if (!overlapCheck("player", ps)) createPlane("player", skySquares[sid - 100]);
+                if (!overlapCheck("player", ps)) createPlane("player", playerSkySquares[sid - 100]);
     }
     select.disabled = false;
 }
@@ -108,9 +112,16 @@ function createPlane (whose, square) {
     if (whose == "player") myPlanes.push(plane);
     if (whose == "computer") computerPlanes.push(plane);
     if (myPlanes.length == 3) {
-        button.disabled = true;
-        document.getElementById("mp").style = 'background-color: skyblue; color: white';
+        startPlay();
     }
+}
+
+function startPlay() {
+    button.disabled = true;
+        document.getElementById("mp").style = 'background-color: skyblue; color: white';
+        Array.from(document.getElementsByClassName("remove1")).forEach((elem) => elem.style = 'display: none');
+        Array.from(document.getElementsByClassName("remove2")).forEach((elem) => elem.style = 'display: block');
+        playerShooting();
 }
 
 function overlapCheck (whose, ps) {
@@ -157,7 +168,6 @@ function createComputerPlanes() {
             if (!overlapCheck("computer", ps)) 
                         createPlane("computer", squareHead);
         }
-        
     } while (computerPlanes.length < 3 );
 }
 
@@ -165,15 +175,12 @@ function checkComputerPlanesOverlap() {
     for (let ps0 of computerPlanes[0].body) {
         for (let ps1 of computerPlanes[1].body) {
             if (ps0.id == ps1.id) {
-                //console.log('0 and 1', ps0, ps1);
                 return true;
             }
-            
         }
 
         for (let ps2 of computerPlanes[2].body) {
             if (ps0.id == ps2.id) {
-                //console.log('0 and 2', ps0, ps2);
                 return true;
             }
         }
@@ -181,7 +188,6 @@ function checkComputerPlanesOverlap() {
     for (let ps1 of computerPlanes[1].body) {
         for (let ps2 of computerPlanes[2].body) {
             if (ps1.id == ps2.id) {
-                //console.log('1 and 2',ps1, ps2);
                 return true;
             }
         }
@@ -189,6 +195,8 @@ function checkComputerPlanesOverlap() {
     return false;
 }   
 
+
+//this should be commented out!!!
 function showComputerPlanes() {
     for (let i=0; i<computerPlanes.length; i++) {
     let color;
@@ -199,9 +207,77 @@ function showComputerPlanes() {
         sq.style = 'background-color: ' + color;
     }
 }
+//this should be commented out!!!
+
+function placeShot(who) {
+    element = document.getElementById(csid);
+    if (who == "computer") planesArray = myPlanes;
+    if (who == "player") planesArray = computerPlanes;
+    //debugger;
+    planesArray.forEach((plane) => {
+        if (csid == plane.head.id) {
+            element.style = 'background-color: ' + colorHead;
+            //break;
+        } else if (plane.body.some((elem) => elem.id == csid)) {
+            element.style = 'background-color: ' + colorBody;
+            //break
+        } else {
+            element.style = 'background-color: ' + colorEmpty;
+        }
+    })
+    if (who == "player") computerShoot();
+    if (who == "computer") playerShooting();
+}
+
+function computerShoot() {
+    let rnd = 0;
+    while (rnd < 100) {
+        rnd = Math.round(199 * Math.random());
+    }
+    csid = rnd;
+    placeShot("computer");
+}
+
+function shootingPreview() {
+    element = document.getElementById(csid);
+    element.style = 'background-color: black' /* add some cool effect */
+}         
+
+function returnNotTarget() {
+    element = document.getElementById(csid);
+    element.style = 'background-color: rgba(96, 139, 168, .1)';
+}
+
+function shoot() {
+    
+    
+
+    element = document.getElementById(csid);
+    
+    computerSkySquares.splice(computerSkySquares.indexOf(element), 1);
+    element.removeEventListener("mouseenter", shootingPreview);
+    element.removeEventListener("mouseleave", returnNotTarget);
+    element.removeEventListener("click", shoot);
+    computerSkySquares.forEach((square) => {
+        square.removeEventListener("mouseenter", shootingPreview);
+        square.removeEventListener("mouseleave", returnNotTarget);
+        square.removeEventListener("click", shoot);
+    });
+    placeShot("player");
+}
+
+function playerShooting() {
+    computerSkySquares.forEach((elem) => {
+        elem.addEventListener("mouseenter", () => csid = elem.id);
+        elem.addEventListener("mouseenter", shootingPreview);
+        elem.addEventListener("mouseleave", returnNotTarget);
+        elem.addEventListener("click", shoot);
+    })
+}
+    
 // no more functions!
 
-for (let square of skySquares) {
+for (let square of playerSkySquares) {
         function planePreview () {
             sid = Number(square.id);
             for (let option of Array.from(select.options)) {
@@ -213,25 +289,27 @@ for (let square of skySquares) {
 
 button.addEventListener("click", () => {
                     select.disabled = true;
-                    for (let square of skySquares) {
+                    for (let square of playerSkySquares) {
                         square.addEventListener("mouseenter", setBgGray);
                         square.addEventListener("mouseleave", setBgEmpty);
                         square.addEventListener("click", setPlane);
-                    }});
+}});
 
 //create computer planes:
-
 createComputerPlanes();
-do {
-    if (checkComputerPlanesOverlap()) {
+while (checkComputerPlanesOverlap()) {
         computerPlanes = [];
         createComputerPlanes();
-    } 
-} while (checkComputerPlanesOverlap());
+} 
+
 document.getElementById("cp").style = 'background-color: skyblue; color: white';
 
 // Show computer plane - to be comented out
-showComputerPlanes();
-// Show computer plane - to be comented out 
+//showComputerPlanes();
+
+//start shooting:
+
+
+
 
 

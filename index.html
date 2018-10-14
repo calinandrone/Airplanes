@@ -7,6 +7,7 @@
         <link href="https://fonts.googleapis.com/css?family=Mali:700" rel="stylesheet">
     </head>
     <body>
+        <script src="welcome.js"></script>
         <p>Welcome to:</p>
         <div id="title">
             <h1>Airp</h1>
@@ -18,15 +19,18 @@
             <p id="mp">My planes</p>
             <p id="cp">Computer planes</p>
             <div class="sky" id="my"></div>
-            <p id="select">Select where each plane goes and place 3 planes. <br><br>Plane goes:
-                <select>
-                    <option value="north">North</option>
-                    <option value="south">South</option>
-                    <option value="east">East</option>
-                    <option value="west">West</option>
-                </select><br><br>
-                <button type="button">Create plane</button>
-            </p>
+                <div id="select">
+                    <p class="remove1">Select where each plane goes and place 3 planes. </p>
+                    <p class="remove1">Plane goes:</p>
+                    <select class="remove1">
+                        <option value="north">North</option>
+                        <option value="south">South</option>
+                        <option value="east">East</option>
+                        <option value="west">West</option>
+                    </select><br><br>
+                    <button type="button" class="remove1" id="pp">Place plane</button>
+                    <p class="remove2">Choose a square of "Computer planes" and shoot! </p>
+                </div>
             <div class="sky" id="computer"></div>
         </div>
         
