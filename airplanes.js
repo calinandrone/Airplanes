@@ -4,12 +4,14 @@ for (let i = 0; i < 100; i++) {
     sky[0].appendChild(createSkySquare(i, 1));
     sky[1].appendChild(createSkySquare(i, 3));
 }
-let colorEmpty = 'rgba(60, 127, 168, 1)', colorBody = 'rgba(96, 59, 59, 1)', colorHead = 'rgba(157, 12, 12, 1)';
+let colorEmpty = 'rgba(60, 127, 168, 1)', colorBody = 'rgba(96, 59, 59, 1)', colorHead = 'rgba(157, 12, 12, 1)',
+playerLives = 3, computerLives = 3;
 
 //the player mighty planes mighty variables:
 let myPlanes = [], planeSquares = [], range, x , y, sid, doc,
 playerSkySquares = Array.from(document.getElementsByClassName("skysquare1")),
-button = document.getElementById("pp"), select = document.querySelector("select");
+button = document.getElementById("pp"), select = document.querySelector("select"),
+sketch = document.getElementById("sketch");
 
 //computer planes variables:
 let computerSkySquares = Array.from(document.getElementsByClassName("skysquare3")),
@@ -120,8 +122,19 @@ function startPlay() {
     button.disabled = true;
         document.getElementById("mp").style = 'background-color: skyblue; color: white';
         Array.from(document.getElementsByClassName("remove1")).forEach((elem) => elem.style = 'display: none');
-        Array.from(document.getElementsByClassName("remove2")).forEach((elem) => elem.style = 'display: block');
+        document.getElementById("remove2").style = 'display: block';
+        //sketch.style = 'display: block';
+        //sketch.addEventListener("click", sketchPlane);
         playerShooting();
+}
+
+function sketchPlane() {
+    console.log("sketch", csid);
+    element = document.getElementById(csid)
+    element.removeEventListener("mouseenter", shootingPreview);
+    element.removeEventListener("mouseenter", returnNotTarget);
+    element.removeEventListener("click", setPlane);
+    element.style = 'backround-color: white';
 }
 
 function overlapCheck (whose, ps) {
@@ -213,20 +226,51 @@ function placeShot(who) {
     element = document.getElementById(csid);
     if (who == "computer") planesArray = myPlanes;
     if (who == "player") planesArray = computerPlanes;
-    //debugger;
+    element.style = 'background-color: ' + colorEmpty;
     planesArray.forEach((plane) => {
+        if (plane.body.some((elem) => elem.id == csid)) {
+            element.style = 'background-color: ' + colorBody;
+        } 
+
         if (csid == plane.head.id) {
             element.style = 'background-color: ' + colorHead;
-            //break;
-        } else if (plane.body.some((elem) => elem.id == csid)) {
-            element.style = 'background-color: ' + colorBody;
-            //break
-        } else {
-            element.style = 'background-color: ' + colorEmpty;
+            if (who == "computer") {
+                computerLives--;
+                if (computerLives == 0) lose("player");
+            }
+            if (who == "player") {
+                playerLives--;
+                if (playerLives == 0) lose("computer");
+            }
         }
     })
-    if (who == "player") computerShoot();
     if (who == "computer") playerShooting();
+    if (who == "player") computerShoot();
+}
+
+function lose(who) {
+    document.getElementById("remove2").style = 'display: none';
+    if (who == "computer") {
+        document.getElementById("cp").style = 'color: white; background-color: red';
+        document.getElementById("mp").style = 'color: white; background-color: green';
+        document.getElementById("select").style = 'color: white; background-color: green';
+        document.getElementById("won").style = 'color: white; display: block';
+        //alert("You won!")
+    }
+
+    if (who == "player") {
+        document.getElementById("cp").style = 'color: white; background-color: green';
+        document.getElementById("mp").style = 'color: white; background-color: red';
+        document.getElementById("select").style = 'color: white; background-color: red';
+        document.getElementById("lost").style = 'color: white; display: block';
+        //alert("You lost!")
+    }
+
+    computerSkySquares.forEach((element) => {
+        element.removeEventListener("mouseenter", shootingPreview);
+        element.removeEventListener("mouseleave", returnNotTarget);
+        element.removeEventListener("click", shoot);
+    })
 }
 
 function computerShoot() {
@@ -249,11 +293,7 @@ function returnNotTarget() {
 }
 
 function shoot() {
-    
-    
-
     element = document.getElementById(csid);
-    
     computerSkySquares.splice(computerSkySquares.indexOf(element), 1);
     element.removeEventListener("mouseenter", shootingPreview);
     element.removeEventListener("mouseleave", returnNotTarget);

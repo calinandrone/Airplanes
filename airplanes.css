@@ -98,6 +98,6 @@ body > div > p, #select {
     border: 1px solid rgb(78, 111, 133);
 }
 
-.remove2 {
+#remove2, #won, #lost, #sketch{
     display: none;
 }
